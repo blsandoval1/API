@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBASISTENCIASModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Asistencia">
+          <Key>
+            <PropertyRef Name="id_asis" />
+          </Key>
+          <Property Name="id_asis" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_ingreso" Type="date" />
+          <Property Name="fecha_salida" Type="date" />
+          <Property Name="id_emp" Type="int" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="id_emp" />
+          </Key>
+          <Property Name="id_emp" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_completo" Type="varchar" MaxLength="100" />
+          <Property Name="telefono" Type="varchar" MaxLength="15" />
+          <Property Name="correo" Type="varchar" MaxLength="25" />
+          <Property Name="cedula" Type="varchar" MaxLength="13" />
+          <Property Name="lugar_nacimiento" Type="varchar" MaxLength="25" />
+          <Property Name="sexo" Type="varchar" MaxLength="1" />
+          <Property Name="estado_civil" Type="varchar" MaxLength="10" />
+          <Property Name="area_trabajo" Type="varchar" MaxLength="25" />
+        </EntityType>
+        <EntityType Name="Informe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pago_empleado" Type="float" />
+          <Property Name="dias_trabajo" Type="float" />
+          <Property Name="id_emp" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idusuario" />
+          </Key>
+          <Property Name="idusuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" />
+          <Property Name="contrasena" Type="varchar" MaxLength="50" />
+          <Property Name="rol" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <Association Name="FK_Asistencia_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Asistencia" Type="Self.Asistencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="id_emp" />
+            </Principal>
+            <Dependent Role="Asistencia">
+              <PropertyRef Name="id_emp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Informe_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Informe" Type="Self.Informe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="id_emp" />
+            </Principal>
+            <Dependent Role="Informe">
+              <PropertyRef Name="id_emp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Reporte" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Departamento" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ReporteFechas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FechaIng" Type="date" Mode="In" />
+          <Parameter Name="FechaSal" Type="date" Mode="In" />
+        </Function>
+        <Function Name="ReportePromedio1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Empleado" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="DBASISTENCIASModelStoreContainer">
+          <EntitySet Name="Asistencia" EntityType="Self.Asistencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Informe" EntityType="Self.Informe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Asistencia_Empleado" Association="Self.FK_Asistencia_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Asistencia" EntitySet="Asistencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Informe_Empleado" Association="Self.FK_Informe_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Informe" EntitySet="Informe" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBASISTENCIASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Asistencia">
+          <Key>
+            <PropertyRef Name="id_asis" />
+          </Key>
+          <Property Name="id_asis" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_ingreso" Type="DateTime" Precision="0" />
+          <Property Name="fecha_salida" Type="DateTime" Precision="0" />
+          <Property Name="id_emp" Type="Int32" />
+          <NavigationProperty Name="Empleado" Relationship="Self.FK_Asistencia_Empleado" FromRole="Asistencia" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="id_emp" />
+          </Key>
+          <Property Name="id_emp" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_completo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="cedula" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="lugar_nacimiento" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="sexo" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="estado_civil" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="area_trabajo" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Asistencia" Relationship="Self.FK_Asistencia_Empleado" FromRole="Empleado" ToRole="Asistencia" />
+          <NavigationProperty Name="Informe" Relationship="Self.FK_Informe_Empleado" FromRole="Empleado" ToRole="Informe" />
+        </EntityType>
+        <EntityType Name="Informe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pago_empleado" Type="Double" />
+          <Property Name="dias_trabajo" Type="Double" />
+          <Property Name="id_emp" Type="Int32" />
+          <NavigationProperty Name="Empleado" Relationship="Self.FK_Informe_Empleado" FromRole="Informe" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="idusuario" />
+          </Key>
+          <Property Name="idusuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contrasena" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="rol" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Asistencia_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Asistencia" Type="Self.Asistencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="id_emp" />
+            </Principal>
+            <Dependent Role="Asistencia">
+              <PropertyRef Name="id_emp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Informe_Empleado">
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="0..1" />
+          <End Role="Informe" Type="Self.Informe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Empleado">
+              <PropertyRef Name="id_emp" />
+            </Principal>
+            <Dependent Role="Informe">
+              <PropertyRef Name="id_emp" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Asistencia" EntityType="Self.Asistencia" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" />
+          <EntitySet Name="Informe" EntityType="Self.Informe" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="FK_Asistencia_Empleado" Association="Self.FK_Asistencia_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Asistencia" EntitySet="Asistencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Informe_Empleado" Association="Self.FK_Informe_Empleado">
+            <End Role="Empleado" EntitySet="Empleado" />
+            <End Role="Informe" EntitySet="Informe" />
+          </AssociationSet>
+          <FunctionImport Name="ReportePromedio1" ReturnType="Collection(DBASISTENCIASModel.ReportePromedio1_Result)">
+          <Parameter Name="Empleado" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Reporte" ReturnType="Collection(DBASISTENCIASModel.Reporte_Result)">
+          <Parameter Name="Departamento" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ReporteFechas" ReturnType="Collection(DBASISTENCIASModel.ReporteFechas_Result)">
+            <Parameter Name="FechaIng" Mode="In" Type="DateTime" />
+            <Parameter Name="FechaSal" Mode="In" Type="DateTime" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="ReportePromedio1_Result">
+          <Property Type="Int32" Name="Empleado" Nullable="false" />
+          <Property Type="Int32" Name="Asistencia" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Reporte_Result">
+          <Property Type="String" Name="Departamento" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="Asistencia" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ReporteFechas_Result">
+          <Property Type="String" Name="Departamento" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="Asistencia" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBASISTENCIASModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Asistencia">
+            <EntityTypeMapping TypeName="DBASISTENCIASModel.Asistencia">
+              <MappingFragment StoreEntitySet="Asistencia">
+                <ScalarProperty Name="id_asis" ColumnName="id_asis" />
+                <ScalarProperty Name="fecha_ingreso" ColumnName="fecha_ingreso" />
+                <ScalarProperty Name="fecha_salida" ColumnName="fecha_salida" />
+                <ScalarProperty Name="id_emp" ColumnName="id_emp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleado">
+            <EntityTypeMapping TypeName="DBASISTENCIASModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="id_emp" ColumnName="id_emp" />
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="lugar_nacimiento" ColumnName="lugar_nacimiento" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="estado_civil" ColumnName="estado_civil" />
+                <ScalarProperty Name="area_trabajo" ColumnName="area_trabajo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Informe">
+            <EntityTypeMapping TypeName="DBASISTENCIASModel.Informe">
+              <MappingFragment StoreEntitySet="Informe">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="pago_empleado" ColumnName="pago_empleado" />
+                <ScalarProperty Name="dias_trabajo" ColumnName="dias_trabajo" />
+                <ScalarProperty Name="id_emp" ColumnName="id_emp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DBASISTENCIASModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="DBASISTENCIASModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="idusuario" ColumnName="idusuario" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="contrasena" ColumnName="contrasena" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ReportePromedio1" FunctionName="DBASISTENCIASModel.Store.ReportePromedio1">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBASISTENCIASModel.ReportePromedio1_Result">
+                <ScalarProperty Name="Empleado" ColumnName="Empleado" />
+                <ScalarProperty Name="Asistencia" ColumnName="Asistencia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Reporte" FunctionName="DBASISTENCIASModel.Store.Reporte">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBASISTENCIASModel.Reporte_Result">
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Asistencia" ColumnName="Asistencia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ReporteFechas" FunctionName="DBASISTENCIASModel.Store.ReporteFechas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBASISTENCIASModel.ReporteFechas_Result">
+                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
+                <ScalarProperty Name="Asistencia" ColumnName="Asistencia" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
